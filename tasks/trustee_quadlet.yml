@@ -120,6 +120,13 @@
   when: trustee_gc_pod_name.files | length > 0
   failed_when: false
 
+- name: Write KBS certificate to /etc/trustee-gc/server.crt
+  ansible.builtin.copy:
+    content: "{{ trustee_attestation_client_trustee_kbs_cert }}"
+    dest: /etc/trustee-gc/server.crt
+    mode: "0644"
+  when: trustee_attestation_client_trustee_kbs_cert | length > 0
+
 - name: Clean up temporary repository directory
   ansible.builtin.file:
     path: "{{ __trustee_attestation_client_quadlet_repo_dir.path }}"

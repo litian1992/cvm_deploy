@@ -14,6 +14,9 @@ trustee_attestation_client_quadlet_install_dir: "/etc/containers/systemd"
 trustee_attestation_client_trustee_kbs_url: ""
 trustee_attestation_client_trustee_kbs_cert: ""
 
+# Secret registration client configuration
+trustee_attestation_client_secret_registration_client_enabled: false
+
 # Encrypt disk configuration
 trustee_attestation_client_encrypt_disk: false
 trustee_attestation_client_encrypt_disk_mount_point: "/mnt/encrypted-disk"

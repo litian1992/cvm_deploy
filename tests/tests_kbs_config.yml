@@ -84,3 +84,13 @@
         fail_msg: >-
           Neither /etc/trustee-gc/cdh/config.toml nor
           /etc/trustee-gc/aa/config.toml was found after role execution
+
+    - name: Stat KBS certificate file
+      stat:
+        path: /etc/trustee-gc/server.crt
+      register: __test_kbs_cert
+
+    - name: Assert KBS certificate was written
+      assert:
+        that: __test_kbs_cert.stat.exists
+        fail_msg: "KBS certificate /etc/trustee-gc/server.crt was not written"

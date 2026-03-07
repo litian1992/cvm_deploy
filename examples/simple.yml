@@ -10,5 +10,6 @@
     trustee_attestation_client_encrypt_disk: false
     trustee_attestation_client_trustee_kbs_url: "https://kbs.example.com"
     trustee_attestation_client_trustee_kbs_cert: "/path/to/kbs-cert.pem"
+    trustee_attestation_client_secret_registration_client_enabled: false
   roles:
     - linux-system-roles.trustee_attestation_client
