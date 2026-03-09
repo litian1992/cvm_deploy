@@ -4,102 +4,76 @@
 
 ![trustee_server](https://github.com/linux-system-roles/trustee_server/workflows/tox/badge.svg)
 
-A trustee_server for an ansible role that configures some GNU/Linux subsystem or
-service. A brief description of the role goes here.
+An Ansible role that deploys [Trustee](https://confidentialcontainers.org/docs/attestation/) server components for confidential computing. Trustee provides attestation and secret delivery services (KBS, Attestation Service) for workloads running in Trusted Execution Environments (TEEs).
+
+## Features
+
+- **Trustee Server (Quadlet)**: Deploys Trustee Key Broker Service(KBS), Attestation Service(AS) and Reference Value Provider Service(RVPS) using Podman Quadlets from a GitHub repository
+- **Secret Registration Server**: HTTPS service that receives attestation-backed registration requests, verifies attestation, creates disk encryption keys, and stores them in Trustee KBS
 
 ## Requirements
 
-Any prerequisites that may not be covered by Ansible itself or the role should
-be mentioned here.  This includes platform dependencies not managed by the
-role, hardware requirements, external collections, etc.  There should be a
-distinction between *control node* requirements (like collections) and
-*managed node* requirements (like special hardware, platform provisioning).
+### Control node
 
-### Collection requirements
-
-For instance, if the role depends on some collections and has a
-`meta/collection-requirements.yml` file for installing those dependencies, and
-in order to manage `rpm-ostree` systems, it should be mentioned here that the
- user should run
+- Ansible 2.9 or later
+- Install collection dependencies:
 
 ```bash
-ansible-galaxy collection install -vv -r meta/collection-requirements.yml
+ansible-galaxy collection install -r meta/collection-requirements.yml
 ```
 
-on the *control node* before using the role.
+### Managed node
 
-## Role Variables
-
-A description of all input variables (i.e. variables that are defined in
-`defaults/main.yml`) for the role should go here as these form an API of the
-role.  Each variable should have its own section e.g.
-
-### trustee_server_foo
-
-This variable is required.  It is a string that lists the foo of the role.
-There is no default value.
-
-### trustee_server_bar
-
-This variable is optional.  It is a boolean that tells the role to disable bar.
-The default value is `true`.
-
-Variables that are not intended as input, like variables defined in
-`vars/main.yml`, variables that are read from other roles and/or the global
-scope (ie. hostvars, group vars, etc.) can be also mentioned here but keep in
-mind that as these are probably not part of the role API they may change during
-the lifetime.
-
-Example of setting the variables:
-
-```yaml
-trustee_server_foo: "oof"
-trustee_server_bar: false
-```
-
-## Variables Exported by the Role
-
-This section is optional.  Some roles may export variables for playbooks to
-use later.  These are analogous to "return values" in Ansible modules.  For
-example, if a role performs some action that will require a system reboot, but
-the user wants to defer the reboot, the role might set a variable like
-`trustee_server_reboot_needed: true` that the playbook can use to reboot at a more
-convenient time.
-
-Example:
-
-### trustee_server_reboot_needed
-
-Default `false` - if `true`, this means a reboot is needed to apply the changes
-made by the role
+- Fedora or RHEL 9+
+- Podman
+- Python 3
 
 ## Example Playbook
 
-Including an example of how to use your role (for instance, with variables
-passed in as parameters) is always nice for users too:
-
 ```yaml
-- name: Manage the trustee_server subsystem
+- name: Deploy Trustee Server
   hosts: all
   vars:
-    trustee_server_foo: "foo foo!"
-    trustee_server_bar: false
+    trustee_server_trustee: true
+    trustee_server_quadlet_repo_url: "https://github.com/litian1992/trustee-quadlet-rhel.git"
+    trustee_server_quadlet_repo_path: "quadlet"
+    trustee_server_quadlet_repo_branch: "main"
+    trustee_server_quadlet_install_dir: "/etc/containers/systemd"
+    trustee_server_secret_registration_server_enabled: true
+    trustee_server_secret_registration_listen_port: 8081
   roles:
     - linux-system-roles.trustee_server
 ```
 
-More examples can be provided in the [`examples/`](examples) directory. These
-can be useful, especially for documentation.
+More examples are in the [`examples/`](examples) directory.
 
-## rpm-ostree
+## Trustee Server
 
-See README-ostree.md
+When enabled, the role:
+
+1. Downloads the Podman Quadlets from designated repo
+2. Generates all required certficates of Trustee server components
+3. Add KBS port 8080 to firewalld
+3. Enables the services by default
+
+Note that KBS listens on port 8080 which may require additional network security allowance depending on your environment.
+
+## Secret Registration Server
+
+When enabled, the secret registration server:
+
+1. Listens for `POST /register-encryption-key` with `attestation_token` and `client_id` (machine-id)
+2. Verifies the attestation token (Azure TPM-based)
+3. Creates a disk encryption key and stores it in Trustee KBS
+4. Appends resource policy to `/etc/trustee/kbs/policy.rego`
+
+Clients can then fetch the key from Trustee CDH using attestation.
 
 ## License
 
-Whenever possible, please prefer MIT.
+MIT
 
-## Author Information
+## Author
 
 An optional section for the role authors to include contact information, or a
 website (HTML is not allowed).

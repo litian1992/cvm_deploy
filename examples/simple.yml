@@ -8,6 +8,6 @@
     trustee_server_quadlet_repo_path: "quadlet"
     trustee_server_quadlet_repo_branch: "main"
     trustee_server_quadlet_install_dir: "/etc/containers/systemd"
-    trustee_server_secret_registration_service_enabled: false
+    trustee_server_secret_registration_server_enabled: false
   roles:
     - linux-system-roles.trustee-server

@@ -70,10 +70,14 @@
 - name: Generate certificates for all components
   ansible.builtin.shell: |
     # Trustee Server SSL
-    if [ ! -f /etc/trustee/kbs/server.crt ] || [ ! -f /etc/trustee/kbs/server.key ]; then
-      openssl req -new -x509 -nodes -sha256 -days 3550 \
+    if [ ! -f /etc/trustee/kbs/server.key ] || [ ! -f /etc/trustee/kbs/server.crt ]; then
+      openssl req -x509 -newkey rsa:2048 -nodes -keyout /etc/trustee/kbs/server.key \
         -subj "/CN=$(hostname -f)/O=Red Hat" \
-        -out /etc/trustee/kbs/server.crt -keyout /etc/trustee/kbs/server.key
+        -addext "basicConstraints=CA:FALSE" \
+        -addext "keyUsage=digitalSignature,keyEncipherment" \
+        -addext "extendedKeyUsage=serverAuth" \
+        -addext "subjectAltName=DNS:$(hostname -f)" \
+        -out /etc/trustee/kbs/server.crt
     fi
     # KBS authentication key pair
     if [ ! -f /etc/trustee/kbs/auth.key ] || [ ! -f /etc/trustee/kbs/auth.pub ]; then
@@ -89,6 +93,7 @@
       mkdir -p /etc/trustee/kbs/trusted_certs
       cp /etc/trustee/as/token.crt /etc/trustee/kbs/trusted_certs/token0.crt
     fi
+  changed_when: true
 
 - name: Gather service facts
   ansible.builtin.service_facts:
@@ -99,7 +104,7 @@
     permanent: true
     immediate: true
     state: enabled
-  when: ansible_facts.services['firewalld.service'].state == 'running'
+  when: (ansible_facts.services | default({})).get('firewalld.service', {}).get('state', '') == 'running'
 
 - name: Get the installed Trustee Server pod name
   ansible.builtin.find:
