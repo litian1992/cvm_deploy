@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 ---
-- name: Handler for trustee_server to restart services
+- name: Handler for trustee_attestation_server to restart services
   service:
     name: "{{ item }}"
     state: restarted
-  loop: "{{ __trustee_server_services }}"
+  loop: "{{ __trustee_attestation_server_services }}"

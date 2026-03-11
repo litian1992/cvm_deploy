@@ -1,8 +1,8 @@
-# trustee_server
+# trustee_attestation_server
 
-[![ansible-lint.yml](https://github.com/linux-system-roles/trustee_server/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/linux-system-roles/trustee_server/actions/workflows/ansible-lint.yml) [![ansible-test.yml](https://github.com/linux-system-roles/trustee_server/actions/workflows/ansible-test.yml/badge.svg)](https://github.com/linux-system-roles/trustee_server/actions/workflows/ansible-test.yml) [![codespell.yml](https://github.com/linux-system-roles/trustee_server/actions/workflows/codespell.yml/badge.svg)](https://github.com/linux-system-roles/trustee_server/actions/workflows/codespell.yml) [![markdownlint.yml](https://github.com/linux-system-roles/trustee_server/actions/workflows/markdownlint.yml/badge.svg)](https://github.com/linux-system-roles/trustee_server/actions/workflows/markdownlint.yml) [![qemu-kvm-integration-tests.yml](https://github.com/linux-system-roles/trustee_server/actions/workflows/qemu-kvm-integration-tests.yml/badge.svg)](https://github.com/linux-system-roles/trustee_server/actions/workflows/qemu-kvm-integration-tests.yml) [![shellcheck.yml](https://github.com/linux-system-roles/trustee_server/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/linux-system-roles/trustee_server/actions/workflows/shellcheck.yml) [![tft.yml](https://github.com/linux-system-roles/trustee_server/actions/workflows/tft.yml/badge.svg)](https://github.com/linux-system-roles/trustee_server/actions/workflows/tft.yml) [![tft_citest_bad.yml](https://github.com/linux-system-roles/trustee_server/actions/workflows/tft_citest_bad.yml/badge.svg)](https://github.com/linux-system-roles/trustee_server/actions/workflows/tft_citest_bad.yml) [![woke.yml](https://github.com/linux-system-roles/trustee_server/actions/workflows/woke.yml/badge.svg)](https://github.com/linux-system-roles/trustee_server/actions/workflows/woke.yml)
+[![ansible-lint.yml](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/ansible-lint.yml) [![ansible-test.yml](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/ansible-test.yml/badge.svg)](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/ansible-test.yml) [![codespell.yml](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/codespell.yml/badge.svg)](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/codespell.yml) [![markdownlint.yml](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/markdownlint.yml/badge.svg)](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/markdownlint.yml) [![qemu-kvm-integration-tests.yml](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/qemu-kvm-integration-tests.yml/badge.svg)](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/qemu-kvm-integration-tests.yml) [![shellcheck.yml](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/shellcheck.yml) [![tft.yml](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/tft.yml/badge.svg)](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/tft.yml) [![tft_citest_bad.yml](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/tft_citest_bad.yml/badge.svg)](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/tft_citest_bad.yml) [![woke.yml](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/woke.yml/badge.svg)](https://github.com/linux-system-roles/trustee_attestation_server/actions/workflows/woke.yml)
 
-![trustee_server](https://github.com/linux-system-roles/trustee_server/workflows/tox/badge.svg)
+![trustee_attestation_server](https://github.com/linux-system-roles/trustee_attestation_server/workflows/tox/badge.svg)
 
 An Ansible role that deploys [Trustee](https://confidentialcontainers.org/docs/attestation/) server components for confidential computing. Trustee provides attestation and secret delivery services (KBS, AS, RVPS) for workloads running in Trusted Execution Environments (TEEs).
 
@@ -28,15 +28,15 @@ ansible-galaxy collection install -r meta/collection-requirements.yml
 - name: Deploy Trustee Server
   hosts: all
   vars:
-    trustee_server_trustee: true
-    trustee_server_quadlet_repo_url: "https://github.com/litian1992/trustee-quadlet-rhel.git"
-    trustee_server_quadlet_repo_path: "quadlet"
-    trustee_server_quadlet_repo_branch: "main"
-    trustee_server_quadlet_install_dir: "/etc/containers/systemd"
-    trustee_server_secret_registration_server_enabled: true
-    trustee_server_secret_registration_listen_port: 8081
+    trustee_attestation_server_trustee: true
+    trustee_attestation_server_quadlet_repo_url: "https://github.com/litian1992/trustee-quadlet-rhel.git"
+    trustee_attestation_server_quadlet_repo_path: "quadlet"
+    trustee_attestation_server_quadlet_repo_branch: "main"
+    trustee_attestation_server_quadlet_install_dir: "/etc/containers/systemd"
+    trustee_attestation_server_secret_registration_server_enabled: true
+    trustee_attestation_server_secret_registration_listen_port: 8081
   roles:
-    - linux-system-roles.trustee_server
+    - linux-system-roles.trustee_attestation_server
 ```
 
 More examples are in the [`examples/`](examples) directory.
