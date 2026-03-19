@@ -109,6 +109,7 @@
       ansible.builtin.copy:
         content: "{{ __test_cert_content }}"
         dest: "{{ playbook_dir }}/kbs_test_cert.crt"
+        mode: "0644"
       run_once: true
       delegate_to: localhost
 
